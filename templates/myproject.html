@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Style for the GitHub window */
+        .github-window {
+            background-color: #ffffff;
+            border-radius: 6px;
+            padding: 10px;
+            overflow: auto;
+            height: 400px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 800px;
+        }
+        
+        .file {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .file-link {
+            color: #000000;
+            text-decoration: none;
+            font-size: 16px;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .file-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Global styles */
+        body {
+            background-image: url("/static/background.jpg");
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+        .toolbar {
+            background-color: #1f1f1f;
+            color: white;
+            display: flex;
+            justify-content: center;
+            margin-top: 0px;
+            padding: 20px;
+        }
+        .toolbar a {
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+        
+        .toolbar a:hover {
+            text-decoration: underline;
+        }
+        
+        .toolbar-title {
+            color: #1f1f1f;
+            font-size: 30px;
+            margin-top: 40px;
+            padding: 0;
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <a href="/about">About</a>
+        <a href="/experience">Experience</a>
+        <a href="/project">This Project</a>
+        <a href="/skills">Skills</a>
+        <a href="/contact">Contact</a>
+    </div>
+    <h1 class="toolbar-title">My Project</h1>
+    <div class="github-window">
+        <!-- Fetch the list of files in the repository using the GitHub API -->
+        <script>
+            const GITHUB_API_URL = 'https://api.github.com/repos/elad320011/elad/contents/';
+            const filesList = document.createElement('ul');
+            fetch(GITHUB_API_URL)
+                .then(response => response.json())
+                .then(files => {
+                    files.forEach(file => {
+                        const fileName = file.name;
+                        const fileLink = file.html_url;
+                        const listItem = document.createElement('li');
+                        const link = document.createElement('a');
+                        link.setAttribute('href', fileLink);
+                        link.setAttribute('target', '_blank');
+                        link.setAttribute('class', 'file-link');
+                        link.innerText = fileName;
+                        const fileItem = document.createElement('div');
+                        fileItem.setAttribute('class', 'file');
+                        fileItem.appendChild(link);
+                        listItem.appendChild(fileItem);
+                        filesList.appendChild(listItem);
+                    });
+                });
+            document.querySelector('.github-window').appendChild(filesList);
+        </script>
+    </div>
+</body>
+</html>

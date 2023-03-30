@@ -1,0 +1,73 @@
+<!-- This is the template for the home page -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Elad Cohen</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("/static/background.jpg");
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+        .name {
+            font-size: 5rem;
+            text-align: center;
+            margin-top: 25vh;
+            text-shadow: 2px 2px #000000;
+            color: #1f1f1f;
+        }
+        .devops {
+            font-size: 3rem;
+            text-align: center;
+            margin-top: 2rem;
+            text-shadow: 2px 2px #ffffff;
+            color: #000000;
+        }
+        .cv-button {
+            text-align: center;
+            margin-top: 5vh;
+        }
+        .btn-primary {
+            background-color: #ffffff;
+            color: #1f1f1f;
+        }
+        .toolbar {
+            background-color: #1f1f1f;
+            color: white;
+            display: flex;
+            justify-content: center;
+            margin-top: 0px;
+            padding: 20px;
+        }
+        .toolbar a {
+            color: white;
+            margin: 0 20px;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <a href="/about">About</a>
+        <a href="/experience">Experience</a>
+        <a href="/project">This Project</a>
+        <a href="/skills">Skills</a>
+        <a href="/contact">Contact</a>
+    </div>
+
+    <!-- Main content section -->
+    <div class="container mt-5">
+        <h1 class="name">Elad Cohen</h1>
+        <h3 class="devops">DevOps Engineer</h3>
+        <div class="cv-button">
+            <a href="/static/cv.pdf" class="btn btn-lg btn-primary" download>Download CV</a>
+        </div>
+    </div>
+</body>
+</html>
