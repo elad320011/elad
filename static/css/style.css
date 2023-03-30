@@ -1,0 +1,88 @@
+/* Style for the GitHub window */
+.github-window {
+    background-color: #ffffff;
+    border-radius: 6px;
+    padding: 10px;
+    overflow: auto;
+    height: 400px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 800px;
+}
+
+.file {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.file-link {
+    color: #000000;
+    text-decoration: none;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.file-link:hover {
+    text-decoration: underline;
+}
+
+/* Global styles */
+body {
+    background-image: url("/static/images/background.jpg");
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+.toolbar {
+    background-color: #1f1f1f;
+    color: white;
+    display: flex;
+    justify-content: center;
+    margin-top: 0px;
+    padding: 20px;
+}
+.toolbar a {
+    color: white;
+    margin: 0 20px;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+}
+
+.toolbar a:hover {
+    text-decoration: underline;
+}
+
+.toolbar-title {
+    color: #1f1f1f;
+    font-size: 30px;
+    margin-top: 40px;
+    padding: 0;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
+.name {
+    font-size: 5rem;
+    text-align: center;
+    margin-top: 25vh;
+    text-shadow: 2px 2px #000000;
+    color: #1f1f1f;
+}
+.devops {
+    font-size: 3rem;
+    text-align: center;
+    margin-top: 2rem;
+    text-shadow: 2px 2px #ffffff;
+    color: #000000;
+}
+.cv-button {
+    text-align: center;
+    margin-top: 5vh;
+}
+.btn-primary {
+    background-color: #ffffff;
+    color: #1f1f1f;
+}
