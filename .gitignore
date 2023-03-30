@@ -1,5 +1,5 @@
 # Python environment
-.elad/__pycache__
+__pycache__/
 
 # Git file
-.elad/.gitattributes
+.gitattributes
