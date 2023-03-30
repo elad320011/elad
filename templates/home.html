@@ -10,7 +10,7 @@
 <body>
     <!-- Toolbar -->
     <div class="toolbar">
-        <a href="/about">About</a>
+        <a href="/">Home</a>
         <a href="/experience">Experience</a>
         <a href="/project">This Project</a>
         <a href="/skills">Skills</a>
@@ -22,8 +22,21 @@
         <h1 class="name">Elad Cohen</h1>
         <h3 class="devops">DevOps Engineer</h3>
         <div class="cv-button">
-            <a href="/static/files/cv.pdf" class="btn btn-lg btn-primary" download>Download CV</a>
+            <a href="/static/files/Elad Cohen CV.pdf" class="btn btn-lg btn-primary" target="_blank">Preview CV</a>
+            <div class="btn-group" role="group" aria-label="CV download options">
+                <button type="button" class="btn btn-lg btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Download CV
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/static/files/Elad Cohen CV.pdf" download>PDF</a>
+                    <a class="dropdown-item" href="/static/files/Elad Cohen CV.docx" download>Word</a>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

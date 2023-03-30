@@ -1,12 +1,11 @@
 /* Style for the GitHub window */
 .github-window {
-    background-color: #ffffff;
     border-radius: 6px;
     padding: 10px;
     overflow: auto;
     height: 400px;
     margin: 20px auto;
-    width: 90%;
+    width: 40%;
     max-width: 800px;
 }
 
@@ -22,20 +21,57 @@
     color: #000000;
     text-decoration: none;
     font-size: 16px;
-    font-family: 'Roboto', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
 .file-link:hover {
     text-decoration: underline;
 }
 
+.cv-button {
+    text-align: center;
+    margin-top: 5vh;
+}
+
+.dropdown-toggle.btn-primary {
+    background-color: #ffffff;
+    color: #1f1f1f;
+}
+
+.dropdown-toggle.btn-primary:hover {
+    background-color: #ffffff;
+    color: #1f1f1f;
+}
+
+.dropdown-menu {
+    background-color: #ffffff;
+    color: #1f1f1f;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-menu a {
+    color: #1f1f1f;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f5f5f5;
+    color: #1f1f1f;
+}
+
+
 /* Global styles */
 body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     background-image: url("/static/images/background.jpg");
     background-size: cover;
     background-position: center;
     color: white;
 }
+
 .toolbar {
     background-color: #1f1f1f;
     color: white;
@@ -44,6 +80,7 @@ body {
     margin-top: 0px;
     padding: 20px;
 }
+
 .toolbar a {
     color: white;
     margin: 0 20px;
@@ -56,14 +93,37 @@ body {
     text-decoration: underline;
 }
 
-.toolbar-title {
+.my-project {
     color: #1f1f1f;
     font-size: 30px;
     margin-top: 40px;
     padding: 0;
     text-align: center;
-    font-family: 'Roboto', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
+.title-with-image {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .title-with-image h1 {
+    color: #1f1f1f;
+    font-size: 50px;
+    margin-top: 40px;
+    padding: 0;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    margin-right: 10px; /* add left margin to create space */
+  }
+  
+  .title-with-image img {
+    display: inline-block;
+    margin-top: 45px; /* or adjust the value as needed */
+    max-block-size: 50px;
+    margin-left: 10px; /* add left margin to create space */
+  }
+  
 .name {
     font-size: 5rem;
     text-align: center;
@@ -71,6 +131,7 @@ body {
     text-shadow: 2px 2px #000000;
     color: #1f1f1f;
 }
+
 .devops {
     font-size: 3rem;
     text-align: center;
@@ -78,11 +139,6 @@ body {
     text-shadow: 2px 2px #ffffff;
     color: #000000;
 }
-.cv-button {
-    text-align: center;
-    margin-top: 5vh;
-}
-.btn-primary {
-    background-color: #ffffff;
-    color: #1f1f1f;
-}
+
+
+
