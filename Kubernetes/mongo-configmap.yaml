@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-configmap
+data:
+  MONGO_URI: mongodb-service
+  MONGO_DB: "users"
+  MAIL_SERVER: "smtp.gmail.com"
+  MAIL_PORT: "587"
+
+  
