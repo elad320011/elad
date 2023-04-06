@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elad-website
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elad-website
+  template:
+    metadata:
+      labels:
+        app: elad-website
+    spec:
+      containers:
+      - name: elad-website
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1"
+        image: "elad320011/elad-website:1.0.3"
+        env:
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: flask-secret
+              key: secret-key
+        - name: MONGO_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongo-root-username
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongo-root-password
+        - name: MONGO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-configmap
+              key: MONGO_URI
+        - name: MONGO_DB
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-configmap
+              key: MONGO_DB
+        - name: MAIL_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: mail-configmap
+              key: MAIL_SERVER
+        - name: MAIL_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: mail-configmap
+              key: MAIL_PORT
+        - name: MAIL_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: mail-configmap
+              key: MAIL_USERNAME
+        - name: MAIL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mail-secret
+              key: MAIL_PASSWORD
+        - name: MAIL_DEFAULT_SENDER
+          valueFrom:
+            configMapKeyRef:
+              name: mail-configmap
+              key: MAIL_DEFAULT_SENDER
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elad-website-service
+spec:
+  selector:
+    app: elad-website
+  type: LoadBalancer
+  ports:
+  - port: 5000
+    targetPort: 5000
+    nodePort: 30004
+    
+

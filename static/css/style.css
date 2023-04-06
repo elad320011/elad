@@ -73,8 +73,8 @@ body {
 }
 
 .toolbar {
-    background-color: #1f1f1f;
-    color: white;
+    background-color: #ffffffde;
+    color: rgb(255, 255, 255);
     display: flex;
     justify-content: center;
     margin-top: 0px;
@@ -82,7 +82,7 @@ body {
 }
 
 .toolbar a {
-    color: white;
+    color: rgb(0, 0, 0);
     margin: 0 20px;
     text-decoration: none;
     text-align: center;
@@ -140,5 +140,62 @@ body {
     color: #000000;
 }
 
+.contact-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-top: -250px;
+  }
+  
+  .contact-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: transparent;
+    border-radius: 10px;
+    margin: 10px 0;
+    flex-wrap: wrap;
+  }
+  
+  
+  .contact-options p {
+    margin: 0;
+    padding: 10px 20px;
+  }
+  
+  .contact-options img {
+    margin-right: 15px;
+    max-width: 50px;
+  }
+  
+  .contact-options a {
+    color: #0077b5;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .contact-options a:hover {
+    text-decoration: underline;
+  }
+  
+  
+  /* Add margin to left of each contact option except the first one */
+  .contact-options:not(:first-child) {
+    margin-left: 30px;
+  }
+  
+  /* Add margin between each logo and option */
+  .contact-options img:not(:first-child) {
+    margin-left: 10px;
+  }
+  
+  
+  
+  
 
 

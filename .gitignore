@@ -3,3 +3,8 @@ __pycache__/
 
 # Git file
 .gitattributes
+
+# secrets
+Kubernetes/flask-secret.yaml
+Kubernetes/mail-secret.yaml
+Kubernetes/mongo-secret.yaml
