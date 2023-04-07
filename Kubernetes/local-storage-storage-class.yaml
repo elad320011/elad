@@ -8,4 +8,4 @@ allowVolumeExpansion: true
 reclaimPolicy: Delete
 parameters:
   type: local
-  path: /mnt/data
+  path: /data/Kubernetes
