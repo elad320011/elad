@@ -1,0 +1,58 @@
+pipeline {
+    agent {label 'jenkins-host'}
+
+    environment {
+        DOCKER_REGISTRY = "elad320011"
+        IMAGE_NAME = "elad-website"
+        NAMESPACE = "elad"
+        DEPLOYMENT_NAME = "elad-website"
+        CONTAINER_NAME = "elad-website"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'elad-dev',
+                    credentialsId: 'elad-git-token',
+                    url: 'https://github.com/elad320011/lucky-chicken.git'
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    def gitTag = sh(returnStdout: true, script: "git describe --tags --abbrev=0 --first-parent \$(git rev-list --tags --max-count=1)").trim()
+                    def customImage = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:${gitTag}")
+                    docker.withRegistry("https://registry.hub.docker.com", "elad-dockerhub") {
+                        customImage.push()
+                    }
+                }
+            }
+        }  
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    def gitTag = sh(returnStdout: true, script: "git describe --tags --abbrev=0 --first-parent \$(git rev-list --tags --max-count=1)").trim()
+                    def customImage = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${gitTag}"
+                    sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${customImage} -n ${NAMESPACE}"
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
+
+/*
+Here's an explanation of the changes:
+The Docker image tag is set to the Git tag name in the format ${DOCKER_REGISTRY}/${IMAGE_NAME}:${gitTag}.
+The docker.withRegistry block is used to authenticate with Docker Hub using a Jenkins credential (docker-hub-credentials-id).
+The kubeconfig file is retrieved from a Jenkins credential (kubeconfig-credentials-id) in a secure manner.
+The kubectl set image command is used to update the Kubernetes deployment to use the new Docker image.
+Note that you'll need to have the git,github and docker plugins installed in your Jenkins instance, and the kubectl command-line tool installed on the Jenkins machine for this pipeline to work. You'll also need to set up the Docker Hub and kubeconfig credentials in Jenkins beforehand.
+*/
