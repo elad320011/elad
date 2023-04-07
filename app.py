@@ -7,7 +7,6 @@ from flask_mail import Mail, Message
 
 #loads environment variables from a .env file, needed for os module
 load_dotenv()
-
 app = Flask(__name__)
 
 # Key to sign cookies, important for security 
