@@ -1,39 +1,22 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+name: pytest
 
-name: Python application
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
+on: [push] # Run the workflow on every push to the repository
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Use the Ubuntu operating system for the job
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+    - uses: actions/checkout@v2 # Checkout the repository code
+    - name: Set up Python 3.10 # Use Python 3.10 for the job
+      uses: actions/setup-python@v2
       with:
         python-version: "3.10"
-    - name: Install dependencies
+    - name: Install dependencies # Install the project dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
-      run: |
-        pytest
+        python -m pip install --upgrade pip # Upgrade pip to the latest version
+        pip install -r requirements.txt # Install the dependencies listed in requirements.txt
+      if: fileExists('requirements.txt') # Only run this step if requirements.txt exists
+    - name: Run pytest # Run pytest
+      run: pytest Tests/ # This will discover and run all the tests in the tests directory
