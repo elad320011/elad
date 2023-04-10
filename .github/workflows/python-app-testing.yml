@@ -16,7 +16,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip # Upgrade pip to the latest version
         pip install -r requirements.txt # Install the dependencies listed in requirements.txt
-      if: fileExists('requirements.txt') # Only run this step if requirements.txt exists
 
     - name: Run pytest # Run pytest
       run: pytest Tests/ # This will discover and run all the tests in the tests directory
