@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_REGISTRY = "elad320011"
         IMAGE_NAME = "elad-website"
-        NAMESPACE = "elad"
+        NAMESPACE = "elad-dev"
         DEPLOYMENT_NAME = "elad-website"
         CONTAINER_NAME = "elad-website"
     }
