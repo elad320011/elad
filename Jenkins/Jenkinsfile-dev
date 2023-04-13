@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     def gitTag = sh(returnStdout: true, script: "git describe --tags --abbrev=0 --first-parent \$(git rev-list --tags --max-count=1)").trim()
-                    def customImage = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:${gitTag}")
+                    def customImage = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:dev-${new Date().format("yyyyMMddHHmmss")}")
                     docker.withRegistry("https://registry.hub.docker.com", "elad-dockerhub") {
                         customImage.push()
                     }
@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     def gitTag = sh(returnStdout: true, script: "git describe --tags --abbrev=0 --first-parent \$(git rev-list --tags --max-count=1)").trim()
-                    def customImage = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${gitTag}"
+                    def customImage = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:dev-${new Date().format("yyyyMMddHHmmss")}")
                     sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${customImage} -n ${NAMESPACE}"
                 }
             }
