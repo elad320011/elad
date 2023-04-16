@@ -7,6 +7,7 @@ pipeline {
         NAMESPACE = "elad-dev"
         DEPLOYMENT_NAME = "elad-website"
         CONTAINER_NAME = "elad-website"
+        CUSTOMIMAGE = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:dev-${new Date().format("yyyyMMddHHmmss")}")
     }
 
     stages {
@@ -21,10 +22,8 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    def gitTag = sh(returnStdout: true, script: "git describe --tags --abbrev=0 --first-parent \$(git rev-list --tags --max-count=1)").trim()
-                    def customImage = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:dev-${new Date().format("yyyyMMddHHmmss")}")
                     docker.withRegistry("https://registry.hub.docker.com", "elad-dockerhub") {
-                        customImage.push()
+                        CUSTOMIMAGE.push()
                     }
                 }
             }
@@ -33,13 +32,18 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    def gitTag = sh(returnStdout: true, script: "git describe --tags --abbrev=0 --first-parent \$(git rev-list --tags --max-count=1)").trim()
-                    def customImage = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:dev-${new Date().format("yyyyMMddHHmmss")}")
-                    sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${customImage} -n ${NAMESPACE}"
+                    def CUSTOMIMAGE = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:dev-${new Date().format("yyyyMMddHHmmss")}")
+                    sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${CUSTOMIMAGE} -n ${NAMESPACE}"
                 }
             }
         }
     }
+            stage('Testing') {
+                    steps {
+                        sh 'python3 -m pip install -r requirements.txt'
+                        sh 'python3 Tests/test_app.py'
+                    }
+                }
 
     post {
         always {
