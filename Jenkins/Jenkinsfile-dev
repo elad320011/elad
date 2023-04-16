@@ -24,7 +24,6 @@ pipeline {
                 script {
                     def CUSTOMIMAGE = docker.build("${IMAGE_PATH}")
                     docker.withRegistry("https://registry.hub.docker.com", "elad-dockerhub") {
-                        
                         CUSTOMIMAGE.push()
                     }
                 }
