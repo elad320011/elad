@@ -12,7 +12,7 @@ class FlaskTest(unittest.TestCase):
             "password": "valid_password"
         }
         response = requests.post(self.base_url + "/login", data=data)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.url, self.base_url + "/home")
 
     def test_login_invalid_credentials(self):
@@ -28,18 +28,22 @@ class FlaskTest(unittest.TestCase):
     def test_register_valid_data(self):
         # Test registering with valid data
         data = {
+            "name": "new_user",
             "email": "new_user@example.com",
-            "password": "new_password"
+            "password": "new_password",
+            "confirm_password": "new_password"
         }
         response = requests.post(self.base_url + "/register", data=data)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(response.url, self.base_url + "/login")
 
     def test_register_existing_user(self):
         # Test registering with an existing user
         data = {
+            "name": "valid_user",
             "email": "valid_user@example.com",
-            "password": "valid_password"
+            "password": "valid_password",
+            "confirm_password": "valid_password"
         }
         response = requests.post(self.base_url + "/register", data=data)
         self.assertEqual(response.status_code, 200)
