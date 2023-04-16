@@ -1,58 +1,71 @@
-import os
-import pytest
-from app import app
+import unittest
+import requests
 
-# Initialize test client with application context
-@pytest.fixture
-def client():
-    with app.test_client() as client:
-        with app.app_context():
-            yield client
+class FlaskTest(unittest.TestCase):
+    def setUp(self):
+        self.base_url = "http://localhost:30007"
 
-# Test home page
-def test_home(client):
-    response = client.get('/')
-    assert response.status_code == 302
-    assert response.headers['Location'] == 'http://localhost/login'
+    def test_login_valid_credentials(self):
+        # Test logging in with valid credentials
+        data = {
+            "email": "valid_user@example.com",
+            "password": "valid_password"
+        }
+        response = requests.post(self.base_url + "/login", data=data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.url, self.base_url + "/home")
 
-# Test login with correct credentials
-def test_login(client):
-    response = client.post('/login', data=dict(email=os.getenv("TEST_EMAIL"), password=os.getenv("TEST_PASSWORD")), follow_redirects=True)
-    assert response.status_code == 200
-    assert b'Home Page' in response.data
+    def test_login_invalid_credentials(self):
+        # Test logging in with invalid credentials
+        data = {
+            "email": "invalid_user@example.com",
+            "password": "invalid_password"
+        }
+        response = requests.post(self.base_url + "/login", data=data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"Invalid email or password.", response.content)
 
-# Test login with incorrect credentials
-def test_login_invalid(client):
-    response = client.post('/login', data=dict(email='invalid@example.com', password='invalid'), follow_redirects=True)
-    assert response.status_code == 200
-    assert b'Invalid email or password.' in response.data
+    def test_register_valid_data(self):
+        # Test registering with valid data
+        data = {
+            "name": "new_user",
+            "email": "new_user@example.com",
+            "password": "new_password",
+            "confirm_password": "new_password"
+        }
+        response = requests.post(self.base_url + "/register", data=data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.url, self.base_url + "/login")
 
-# Test registration with correct input
-def test_register(client):
-    response = client.post('/register', data=dict(email='test@example.com', password='test'), follow_redirects=True)
-    assert response.status_code == 200
-    assert b'Please check your email to verify your account.' in response.data
+    def test_register_existing_user(self):
+        # Test registering with an existing user
+        data = {
+            "name": "valid_user",
+            "email": "valid_user@example.com",
+            "password": "valid_password",
+            "confirm_password": "valid_password"
+        }
+        response = requests.post(self.base_url + "/register", data=data)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"A user with this email address already exists.", response.content)
 
-# Test registration with existing email
-def test_register_existing(client):
-    response = client.post('/register', data=dict(email=os.getenv("TEST_EMAIL"), password=os.getenv("TEST_PASSWORD")), follow_redirects=True)
-    assert response.status_code == 200
-    assert b'A user with this email address already exists.' in response.data
+    def test_home_page(self):
+        # Test the home page
+        response = requests.get(self.base_url + "/home")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"home page", response.content)
 
-# Test email verification with correct input
-def test_verify(client):
-    response = client.get('/verify?email=' + os.getenv("TEST_EMAIL") + '&code=' + os.getenv("TEST_CODE"), follow_redirects=True)
-    assert response.status_code == 200
-    assert b'Your account has been successfully verified!' in response.data
+    def test_about_page(self):
+        # Test the about page
+        response = requests.get(self.base_url + "/contact")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"contact page", response.content)
 
-# Test email verification with incorrect email
-def test_verify_invalid_email(client):
-    response = client.get('/verify?email=invalid@example.com&code=' + os.getenv("TEST_CODE"), follow_redirects=True)
-    assert response.status_code == 200
-    assert b'Invalid verification link.' in response.data
+    def test_project_page(self):
+        # Test the project page
+        response = requests.get(self.base_url + "/project")
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"This Project", response.content)
 
-# Test email verification with incorrect code
-def test_verify_invalid_code(client):
-    response = client.get('/verify?email=' + os.getenv("TEST_EMAIL") + '&code=invalid', follow_redirects=True)
-    assert response.status_code == 200
-    assert b'Invalid verification code.' in response.data
+if __name__ == '__main__':
+    unittest.main()
