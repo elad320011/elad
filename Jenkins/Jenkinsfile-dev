@@ -7,7 +7,8 @@ pipeline {
         NAMESPACE = "elad-dev"
         DEPLOYMENT_NAME = "elad-website"
         CONTAINER_NAME = "elad-website"
-        IMAGE_PATH="${DOCKER_REGISTRY}/${IMAGE_NAME}:dev-${new Date().format("yyyyMMddHHmmss")}"
+        TAG = "dev-${new Date().format('yyyyMMddHHmmss')}"
+        IMAGE_PATH="${DOCKER_REGISTRY}/${IMAGE_NAME}:${TAG}"
     }
 
     stages {
@@ -34,18 +35,26 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    def CUSTOMIMAGE = docker.build("${IMAGE_PATH}")
-                    sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${CUSTOMIMAGE} -n ${NAMESPACE}"
+                    try {
+                        def image = sh(returnStdout: true, script: "docker image ls ${IMAGE_PATH} -q")
+                        if (image) {
+                            sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${IMAGE_PATH} -n ${NAMESPACE}"
+                        } else {
+                            error("Docker image ${IMAGE_PATH} does not exist")
+                        }
+                    } catch (Exception e) {
+                        error("Error: ${e.getMessage()}")
+                    }
                 }
             }
         }
     
-            stage('Testing') {
-                    steps {
-                        sh 'python3 -m pip install -r requirements.txt'
-                        sh 'python3 Tests/test_app.py'
-                 }
+        stage('Testing') {
+            steps {
+                sh 'python3 -m pip install -r requirements.txt'
+                sh 'python3 Tests/test_app.py'
             }
+        }
     }
     post {
         always {
@@ -53,6 +62,7 @@ pipeline {
         }
     }
 }
+
 
 /*
 Here's an explanation of the changes:
