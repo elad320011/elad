@@ -34,16 +34,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                script {
-                    try {
-                        def image = sh(returnStdout: true, script: "docker image ls ${IMAGE_PATH} -q")
-                        if (image) {
-                            sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${IMAGE_PATH} -n ${NAMESPACE}"
-                        } else {
-                            error("Docker image ${IMAGE_PATH} does not exist")
-                        }
-                    } catch (Exception e) {
-                        error("Error: ${e.getMessage()}")
+                        sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${IMAGE_PATH} --image-pull-policy=Always -n ${NAMESPACE}"
                     }
                 }
             }
