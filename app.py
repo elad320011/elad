@@ -50,25 +50,33 @@ def register():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
+        confirm_password = request.form['confirm_password'].encode('utf-8')
+        
+        # Check if the email already exists in the database
         existing_user = users.find_one({'email': email})
-        print (existing_user)
-        if not existing_user:
+        print(existing_user)
+        if existing_user:
             return render_template('register.html', message='A user with this email address already exists.')
-        else:
-            # Generate a random verification code
-            code = os.urandom(16).hex()
-            # Hash the password
-            hashed = bcrypt.hashpw(password, bcrypt.gensalt())
-            # Insert the new user into the database
-            users.insert_one({'email': email, 'password': hashed, 'verified': False, 'verification_code': code})
-            # Send a verification email
-            msg = Message('Verify your email', recipients=[email])
-            verify_url = url_for('verify', _external=True, email=email, code=code)
-            msg.body = f'Click this link to verify your email: {verify_url}'
-            mail.send(msg)
-            return redirect(url_for('login'))
+        
+        # Check if the password and confirm_password fields match
+        if password != confirm_password:
+            return render_template('register.html', message='Passwords do not match.')
+            
+        # Generate a random verification code
+        code = os.urandom(16).hex()
+        # Hash the password
+        hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+        # Insert the new user into the database
+        users.insert_one({'email': email, 'password': hashed, 'verified': False, 'verification_code': code})
+        # Send a verification email
+        msg = Message('Verify your email', recipients=[email])
+        verify_url = url_for('verify', _external=True, email=email, code=code)
+        msg.body = f'Click this link to verify your email: {verify_url}'
+        mail.send(msg)
+        return redirect(url_for('login'))
     else:
         return render_template("register.html")
+
 
 # Email verify page
 @app.route('/verify')
