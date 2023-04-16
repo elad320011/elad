@@ -7,7 +7,7 @@ pipeline {
         NAMESPACE = "elad-dev"
         DEPLOYMENT_NAME = "elad-website"
         CONTAINER_NAME = "elad-website"
-        CUSTOMIMAGE = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:dev-${new Date().format("yyyyMMddHHmmss")}")
+        IMAGE_PATH="${DOCKER_REGISTRY}/${IMAGE_NAME}:dev-${new Date().format("yyyyMMddHHmmss")}"
     }
 
     stages {
@@ -22,7 +22,9 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
+                    def CUSTOMIMAGE = docker.build(${IMAGE_PATH})
                     docker.withRegistry("https://registry.hub.docker.com", "elad-dockerhub") {
+                        
                         CUSTOMIMAGE.push()
                     }
                 }
@@ -33,7 +35,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    def CUSTOMIMAGE = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:dev-${new Date().format("yyyyMMddHHmmss")}")
+                    def CUSTOMIMAGE = docker.build(${IMAGE_PATH})
                     sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${CUSTOMIMAGE} -n ${NAMESPACE}"
                 }
             }
