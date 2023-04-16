@@ -28,6 +28,7 @@ pipeline {
                 }
             }
         }  
+        
 
         stage('Deploy to Kubernetes') {
             steps {
@@ -37,14 +38,14 @@ pipeline {
                 }
             }
         }
-    }
+    
             stage('Testing') {
                     steps {
                         sh 'python3 -m pip install -r requirements.txt'
                         sh 'python3 Tests/test_app.py'
-                    }
-                }
-
+                 }
+            }
+    }
     post {
         always {
             cleanWs()
