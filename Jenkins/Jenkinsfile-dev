@@ -37,7 +37,7 @@ pipeline {
 
         stage('Update Kubernetes Deployment') {
             steps {
-                sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${LATEST_IMAGE_PATH} --record -n ${NAMESPACE}"
+                sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${LATEST_IMAGE_PATH} --record -n ${NAMESPACE} && true"
             }
         }
 
