@@ -51,7 +51,8 @@ def register():
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
         existing_user = users.find_one({'email': email})
-        if existing_user:
+        print (existing_user)
+        if not existing_user:
             return render_template('register.html', message='A user with this email address already exists.')
         else:
             # Generate a random verification code
