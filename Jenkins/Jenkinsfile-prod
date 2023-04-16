@@ -14,7 +14,7 @@ pipeline {
             steps {
                 git branch: 'elad-dev',
                     credentialsId: 'elad-git-token',
-                    url: 'https://github.com/elad320011/lucky-chicken.git'
+                    url: 'https://github.com/elad320011/elad.git'
             }
         }
 

@@ -15,14 +15,14 @@ pipeline {
             steps {
                 git branch: 'elad-dev',
                     credentialsId: 'elad-git-token',
-                    url: 'https://github.com/elad320011/lucky-chicken.git'
+                    url: 'https://github.com/elad320011/elad.git'
             }
         }
 
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    def CUSTOMIMAGE = docker.build(${IMAGE_PATH})
+                    def CUSTOMIMAGE = docker.build("${IMAGE_PATH}")
                     docker.withRegistry("https://registry.hub.docker.com", "elad-dockerhub") {
                         
                         CUSTOMIMAGE.push()
@@ -35,7 +35,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    def CUSTOMIMAGE = docker.build(${IMAGE_PATH})
+                    def CUSTOMIMAGE = docker.build("${IMAGE_PATH}")
                     sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${CUSTOMIMAGE} -n ${NAMESPACE}"
                 }
             }
