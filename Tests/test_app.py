@@ -49,19 +49,19 @@ class FlaskTest(unittest.TestCase):
         # Test the home page
         response = requests.get(self.base_url + "/home")
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"Welcome to the Home Page", response.content)
+        self.assertIn(b"home page", response.content)
 
     def test_about_page(self):
         # Test the about page
         response = requests.get(self.base_url + "/contact")
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"Contact Us", response.content)
+        self.assertIn(b"contact page", response.content)
 
     def test_project_page(self):
         # Test the project page
         response = requests.get(self.base_url + "/project")
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b"My Project", response.content)
+        self.assertIn(b"This Project", response.content)
 
 if __name__ == '__main__':
     unittest.main()
