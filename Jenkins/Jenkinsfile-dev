@@ -35,8 +35,6 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                         sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${IMAGE_PATH} --image-pull-policy=Always -n ${NAMESPACE}"
-                    }
-                }
             }
         }
     
