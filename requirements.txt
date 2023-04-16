@@ -3,5 +3,4 @@ flask_mail
 pymongo
 python-dotenv
 bcrypt
-unittest
 requests
