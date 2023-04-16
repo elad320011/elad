@@ -13,7 +13,7 @@ def client():
 def test_home(client):
     response = client.get('/')
     assert response.status_code == 302
-    assert response.headers['Location'] == 'http://localhost/login'
+    assert response.headers['Location'] == 'http://localhost:30007/login'
 
 # Test login with correct credentials
 def test_login(client):
