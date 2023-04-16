@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     def CUSTOMIMAGE = docker.build("${IMAGE_PATH}")
-                    sh "kubectl set image --validate=false deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${CUSTOMIMAGE} -n ${NAMESPACE}"
+                    sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${CUSTOMIMAGE} -n ${NAMESPACE}"
                 }
             }
         }
