@@ -8,9 +8,8 @@ pipeline {
         DEPLOYMENT_NAME = "elad-website"
         CONTAINER_NAME = "elad-website"
         DEV_IMAGE_TAG = "dev-${new Date().format("yyyyMMddHHmmss")}"
-        LATEST_IMAGE_TAG = "latest"
         DEV_IMAGE_PATH="${DOCKER_REGISTRY}/${IMAGE_NAME}:${DEV_IMAGE_TAG}"
-        LATEST_IMAGE_PATH="${DOCKER_REGISTRY}/${IMAGE_NAME}:${LATEST_IMAGE_TAG}"
+        LATEST_IMAGE_PATH="${DOCKER_REGISTRY}/${IMAGE_NAME}:latest"
     }
 
     stages {
@@ -37,7 +36,7 @@ pipeline {
 
         stage('Update Kubernetes Deployment') {
             steps {
-                sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${LATEST_IMAGE_PATH} --record -n ${NAMESPACE} && true"
+                sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=latest --record -n ${NAMESPACE} && true"
             }
         }
 
