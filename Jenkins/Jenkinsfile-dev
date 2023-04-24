@@ -36,7 +36,7 @@ pipeline {
             steps {
                 sh "sed -i 's/image: my-app:.*/image: my-app:${DEV_IMAGE_TAG}/' Kubernetes/elad-app.yaml"
                 sh "cat Kubernetes/elad-app.yaml"
-                sh "microk8s kubectl apply -f Kubernetes/elad-app.yaml"
+                sh "microk8s kubectl apply -n elad-dev -f Kubernetes/elad-app.yaml"
 
             }
         }
