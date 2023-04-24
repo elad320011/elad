@@ -9,7 +9,7 @@ pipeline {
         CONTAINER_NAME = "elad-website"
         DEV_IMAGE_TAG = "dev-${new Date().format("yyyyMMddHHmmss")}"
         DEV_IMAGE_PATH="${DOCKER_REGISTRY}/${IMAGE_NAME}:${DEV_IMAGE_TAG}"
-        LATEST_IMAGE_PATH="${DOCKER_REGISTRY}/${IMAGE_NAME}:latest"
+        
     }
 
     stages {
@@ -36,7 +36,10 @@ pipeline {
 
         stage('Update Kubernetes Deployment') {
             steps {
-                sh "microk8s kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${LATEST_IMAGE_PATH} -n ${NAMESPACE} && true"
+                sh "sed -i 's/image: my-app:.*/image: my-app:${DEV_IMAGE_TAG}/' Kubernetes/elad-app.yaml"
+                sh "cat Kubernetes/elad-app.yaml"
+                sh "microk8s kubectl apply -f Kubernetes/elad-app.yaml"
+
             }
         }
 

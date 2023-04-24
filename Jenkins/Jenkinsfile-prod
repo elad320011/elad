@@ -7,6 +7,7 @@ pipeline {
         NAMESPACE = "elad"
         DEPLOYMENT_NAME = "elad-website"
         CONTAINER_NAME = "elad-website"
+        LATEST_IMAGE_PATH="${DOCKER_REGISTRY}/${IMAGE_NAME}:latest"
     }
 
     stages {
@@ -22,9 +23,11 @@ pipeline {
             steps {
                 script {
                     def gitTag = sh(returnStdout: true, script: "git describe --tags --abbrev=0 --first-parent \$(git rev-list --tags --max-count=1)").trim()
+                    def latestImage = docker.build("${LATEST_IMAGE_PATH}")
                     def customImage = docker.build("${DOCKER_REGISTRY}/${IMAGE_NAME}:${gitTag}")
                     docker.withRegistry("https://registry.hub.docker.com", "elad-dockerhub") {
                         customImage.push()
+                        latestImage.push()
                     }
                 }
             }
