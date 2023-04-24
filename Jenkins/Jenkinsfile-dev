@@ -36,7 +36,7 @@ pipeline {
 
         stage('Update Kubernetes Deployment') {
             steps {
-                sh "microk8s kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=latest -n ${NAMESPACE} && true"
+                sh "microk8s kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${LATEST_IMAGE_PATH} -n ${NAMESPACE} && true"
             }
         }
 
