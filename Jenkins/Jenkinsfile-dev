@@ -34,7 +34,7 @@ pipeline {
 
         stage('Update Kubernetes Deployment') {
             steps {
-                sh "sed -i 's|image: elad320011/elad-website:.*|image: elad320011/elad-website:${DEV_IMAGE_TAG}|' Kubernetes/elad-app.yaml"
+                sh "sed -n -e 's|image: elad320011/elad-website:.*|image: elad320011/elad-website:${DEV_IMAGE_TAG}|p' Kubernetes/elad-app.yaml"
                 sh "cat Kubernetes/elad-app.yaml"
                 sh "microk8s kubectl apply -n elad-dev -f Kubernetes/elad-app.yaml"
 
