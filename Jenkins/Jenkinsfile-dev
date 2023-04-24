@@ -25,10 +25,8 @@ pipeline {
             steps {
                 script {
                     def devImage = docker.build("${DEV_IMAGE_PATH}")
-                    def latestImage = docker.build("${LATEST_IMAGE_PATH}")
                     docker.withRegistry("https://registry.hub.docker.com", "elad-dockerhub") {
                         devImage.push()
-                        latestImage.push()
                     }
                 }
             }
