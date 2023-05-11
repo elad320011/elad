@@ -36,9 +36,9 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    def gitTag = sh(returnStdout: true, script: "git describe --tags --abbrev=0 --first-parent \$(git rev-list --tags --max-count=1)").trim()
-                    def customImage = "${DOCKER_REGISTRY}/${IMAGE_NAME}:${gitTag}"
-                    sh "kubectl set image deployment/${DEPLOYMENT_NAME} ${CONTAINER_NAME}=${customImage} -n ${NAMESPACE}"
+                    sh "sed -i'' -e 's|image: elad320011/elad-website:.*|image: elad320011/elad-website:${gitTag}|' Kubernetes/elad-app.yaml"
+                    sh "cat Kubernetes/elad-app.yaml"
+                    sh "microk8s kubectl apply -n elad -f Kubernetes/elad-app.yaml"
                 }
             }
         }
