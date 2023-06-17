@@ -1,7 +1,8 @@
 pipeline {
-    agent {label 'jenkins-host'}
+    agent { label 'jenkins-host' }
 
     environment {
+        // Define environment variables for the pipeline
         DOCKER_REGISTRY = "elad320011"
         IMAGE_NAME = "elad-website"
         NAMESPACE = "elad-dev"
@@ -12,6 +13,7 @@ pipeline {
 
     stages {
         stage('Checkout') {
+            // Checkout the repository from GitHub
             steps {
                 git branch: 'elad-dev',
                     credentialsId: 'elad-git-token',
@@ -20,6 +22,7 @@ pipeline {
         }
 
         stage('Build and Push Docker Image') {
+            // Build and push the Docker image to Docker Hub
             steps {
                 script {
                     def CUSTOMIMAGE = docker.build("${IMAGE_PATH}")
@@ -29,9 +32,9 @@ pipeline {
                 }
             }
         }  
-        
 
         stage('Deploy to Kubernetes') {
+            // Deploy the Docker image to a Kubernetes cluster
             steps {
                 script {
                     def CUSTOMIMAGE = docker.build("${IMAGE_PATH}")
@@ -40,25 +43,19 @@ pipeline {
             }
         }
     
-            stage('Testing') {
-                    steps {
-                        sh 'python3 -m pip install -r requirements.txt'
-                        sh 'python3 Tests/test_app.py'
-                 }
+        stage('Testing') {
+            // Run tests on the deployed application
+            steps {
+                sh 'python3 -m pip install -r requirements.txt'
+                sh 'python3 Tests/test_app.py'
             }
+        }
     }
+
     post {
         always {
+            // Clean workspace after the pipeline completes
             cleanWs()
         }
     }
 }
-
-/*
-Here's an explanation of the changes:
-The Docker image tag is set to the Git tag name in the format ${DOCKER_REGISTRY}/${IMAGE_NAME}:${gitTag}.
-The docker.withRegistry block is used to authenticate with Docker Hub using a Jenkins credential (docker-hub-credentials-id).
-The kubeconfig file is retrieved from a Jenkins credential (kubeconfig-credentials-id) in a secure manner.
-The kubectl set image command is used to update the Kubernetes deployment to use the new Docker image.
-Note that you'll need to have the git,github and docker plugins installed in your Jenkins instance, and the kubectl command-line tool installed on the Jenkins machine for this pipeline to work. You'll also need to set up the Docker Hub and kubeconfig credentials in Jenkins beforehand.
-*/
